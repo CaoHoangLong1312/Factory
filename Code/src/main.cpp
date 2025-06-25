@@ -30,7 +30,42 @@ string getVehicleType(int choice) {
     }
 }
 
+map<string, string> users = {
+    {"Dragon", "anh iu em"},
+    {"Dat HCMUS", "1234"},
+    {"Thien HCMUS", "1234"},
+    {"Quang lazy", "1234"},
+    {"guest", "1234"}
+};
+
 int main() {
+    string userName = "";
+    string passWord = "";
+    int tries = 3;
+
+    bool login = false;
+    while (tries--) {
+        cout << "\n===== LOGIN =====\n";
+        cout << "Enter username: ";
+        getline(cin, userName);
+        cout << "Enter password: ";
+        getline(cin, passWord);
+
+        map<string, string>::iterator it = users.find(userName);
+        if (it != users.end() && it->second == passWord) {
+            cout << "Login successful! Welcome, " << userName << ".\n";
+            login = true;
+            break;
+        } else {
+            cout << "Login failed! Please try again. (" << tries << " attempts left)\n";
+        }
+    }
+    
+    if (! login) {
+        cout << "You have exceeded the maximum number of login attempts. The program will now exit.\n";
+        return 0;
+    }
+
     int travelChoice = -1;
     do {
         cout << "\n===== TRAVEL SERVICE SYSTEM =====\n";
@@ -81,7 +116,7 @@ int main() {
 
                 // Booking
                 char bookingChoice;
-                cout << "\nDo you want to book this tour? (y/n): ";
+                cout << "Do you want to book this tour? (y/n): ";
                 cin >> bookingChoice;
 
                 if (bookingChoice == 'y' || bookingChoice == 'Y') {
@@ -135,7 +170,7 @@ int main() {
                 cout << "\n" << ticket->getInfo() << "\n";
 
                 char bookingChoice;
-                cout << "\nDo you want to book this ticket? (y/n): ";
+                cout << "Do you want to book this ticket? (y/n): ";
                 cin >> bookingChoice;
 
                 if (bookingChoice == 'y' || bookingChoice == 'Y') {
@@ -191,7 +226,7 @@ int main() {
                 cout << "\n" << rental->getInfo() << "\n";
 
                 char bookingChoice;
-                cout << "\nDo you want to rent this vehicle? (y/n): ";
+                cout << "Do you want to rent this vehicle? (y/n): ";
                 cin >> bookingChoice;
                 
                 if (bookingChoice =='y' || bookingChoice == 'Y') {
