@@ -9,6 +9,8 @@ public:
     virtual ~TravelService() {}
 };
 
+// Tour service
+
 class Itinerary {
 public:
     string day;
@@ -21,20 +23,37 @@ public:
     string description;
 };
 
-class DaLat : public TravelService {
-private:
+class TourService : public TravelService {
+protected:
     string tourName;
     string tourCode;
+    double tourPrice;
+    int maxGroup;
+    int booked;
+    string contact;
+    vector<Itinerary> itinerary;
+    vector<IncludedService> includedServices;
+
+public:
+    TourService() = default;
+    TourService(const TourService& other)
+        : tourName(other.tourName),
+          tourCode(other.tourCode),
+          tourPrice(other.tourPrice),
+          maxGroup(other.maxGroup),
+          booked(other.booked),
+          contact(other.contact),
+          itinerary(other.itinerary),
+          includedServices(other.includedServices)
+    {}
+    virtual ~TourService() {}
+};
+
+class DaLat : public TourService {
+private:
     string departureDate;
     string transportation;
     string hotel;
-    double tourPrice;
-    vector<Itinerary> itinerary;
-    vector<IncludedService> includedServices;
-    string contact;
-
-    int maxGroup;
-    int booked;
 public:
     DaLat();
     ~DaLat();
@@ -43,18 +62,9 @@ public:
     bool book(int groupSize) override;
 };
 
-class SapaHaGiang : public TravelService {
+class SapaHaGiang : public TourService {
 private:
-    string tourName;
-    string tourCode;
     string departurePoint;
-    double tourPrice;
-    vector<Itinerary> itinerary;
-    vector<IncludedService> includedServices;
-    string contact;
-
-    int maxGroup;
-    int booked;
 public:
     SapaHaGiang();
     ~SapaHaGiang();
@@ -63,19 +73,10 @@ public:
     bool book(int groupSize) override;
 };
 
-class HaLongTuanChau : public TravelService {
+class HaLongTuanChau : public TourService {
 private:
-    string tourName;
-    string tourCode;
     string departurePoint;
     string accommodation;
-    double tourPrice;
-    vector<Itinerary> itinerary;
-    vector<IncludedService> includedServices;
-    string contact;
-    
-    int maxGroup;
-    int booked;
 public:
     HaLongTuanChau();
     ~HaLongTuanChau();
@@ -84,19 +85,10 @@ public:
     bool book(int groupSize) override;
 };
 
-class DaNang : public TravelService {
+class DaNang : public TourService {
 private:
-    string tourName;
-    string tourCode;
     string departurePoint;
     string hotel;
-    double tourPrice;
-    vector<Itinerary> itinerary;
-    vector<IncludedService> includedServices;
-    string contact;
-
-    int maxGroup;
-    int booked;
 public:
     DaNang();
     ~DaNang();
@@ -105,19 +97,10 @@ public:
     bool book(int groupSize) override;
 };
 
-class PhuQuoc : public TravelService {
+class PhuQuoc : public TourService {
 private:
-    string tourName;
-    string tourCode;
     string departurePoint;
     string hotel;
-    double tourPrice;
-    vector<Itinerary> itinerary;
-    vector<IncludedService> includedServices;
-    string contact;
-
-    int maxGroup;
-    int booked;
 public:
     PhuQuoc();
     ~PhuQuoc();
@@ -126,22 +109,141 @@ public:
     bool book(int groupSize) override;
 };
 
-class FlightTicketService : public TravelService {
+// Ticket Service
+class Time {
 public:
-    FlightTicketService();
-    string getInfo() const override;
+    int hour = 0;
+    int min = 0;
 };
 
-class BusTicketService : public TravelService {
+class Date {
+public:
+    int day = 0;
+    int month = 0;
+    int year = 0;
+};
+
+class TicketService : public TravelService {
+protected:
+    string code;
+    string departure;
+    string destination;
+    Time departureTime;
+    Date departureDate;
+    int ticketPrice;
+    int remainingTickets;
+    vector<tuple<string, Time, int>> stops;
+    string baggagePolicy;
+    string cancellationPolicy;
+    string contactInfo;
+public:
+    TicketService() = default;
+    TicketService(const TicketService& other)
+        : code(other.code),
+          departure(other.departure),
+          destination(other.destination),
+          departureTime(other.departureTime),
+          departureDate(other.departureDate),
+          ticketPrice(other.ticketPrice),
+          remainingTickets(other.remainingTickets),
+          stops(other.stops),
+          baggagePolicy(other.baggagePolicy),
+          cancellationPolicy(other.cancellationPolicy),
+          contactInfo(other.contactInfo)
+    {}
+    virtual ~TicketService() {}
+};
+
+class BusTicketService : public TicketService {
+private:
+    string licensePlate;
+
 public:
     BusTicketService();
+    BusTicketService(const BusTicketService& other);
+    ~BusTicketService();
     string getInfo() const override;
+    bool book(int groupSize) override;  
 };
 
-class TrainTicketService : public TravelService {
+class FlightTicketService : public TicketService {
+private:
+    string airplaneCode;
+
+public:
+    FlightTicketService();
+    FlightTicketService(const FlightTicketService& other);
+    ~FlightTicketService();
+    string getInfo() const override;
+    bool book(int groupSize) override;  
+};
+
+class TrainTicketService : public TicketService {
+private:
+    string trainID;
+
 public:
     TrainTicketService();
+    TrainTicketService(const TrainTicketService& other);
+    ~TrainTicketService();
     string getInfo() const override;
+    bool book(int groupSize) override;  
+};
+
+// Car rental service
+class CarRentalService : public TravelService {
+protected:
+    string rentalID;
+    string licensePlate;
+    Date rentalDate;
+    Time startTime;
+    Time endTime;
+    string rentalCity;
+    double hourlyRate;
+    double totalCost;
+    string contactInfo;
+
+public:
+    CarRentalService() = default;
+    CarRentalService(const CarRentalService& other)
+        : rentalID(other.rentalID),
+          licensePlate(other.licensePlate),
+          rentalDate(other.rentalDate),
+          startTime(other.startTime),
+          endTime(other.endTime),
+          rentalCity(other.rentalCity),
+          hourlyRate(other.hourlyRate),
+          totalCost(other.totalCost),
+          contactInfo(other.contactInfo)
+    {}
+    virtual ~CarRentalService() {}
+    string getInfo() const override;
+    bool book(int rentalHours) override;
+    virtual string getVehicleType() const = 0; 
+};
+
+class BikeRental : public CarRentalService {
+public:
+    BikeRental();
+    BikeRental(const BikeRental& other);
+    string getInfo() const override;
+    string getVehicleType() const override { return "Bike"; }
+};
+
+class MotorbikeRental : public CarRentalService {
+public:
+    MotorbikeRental();
+    MotorbikeRental(const MotorbikeRental& other);
+    string getInfo() const override;
+    string getVehicleType() const override { return "Motorbike"; }
+};
+
+class CarRental : public CarRentalService {
+public:
+    CarRental();
+    CarRental(const CarRental& other);
+    string getInfo() const override;
+    string getVehicleType() const override { return "Car"; }
 };
 
 #endif /* F6B5D65E_852A_4768_845D_BB9968DC2DCA */

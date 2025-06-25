@@ -24,20 +24,39 @@ TravelService* TourFactory::createService() const {
 }
 
 // Ticket Factory implementation
-// TicketFactory::TicketFactory(const string& ticketType)
-//     : ticketType(ticketType) {}
+TicketFactory::TicketFactory(const string& ticketType)
+    : ticketType(ticketType) {}
 
-// TicketFactory::TicketFactory(const TicketFactory& other) 
-//     : ticketType(other.ticketType) {}
+TicketFactory::TicketFactory(const TicketFactory& other) 
+    : ticketType(other.ticketType) {}
 
-// TravelService* TicketFactory::createService() const {
-//     if (ticketType == "FlightTicketService") {
-//         return new FlightTicketService();
-//     } else if (ticketType == "BusTicketService") {
-//         return new BusTicketService();
-//     } else if (ticketType == "TrainTicketService") {
-//         return new TrainTicketService();
-//     } else {
-//         return nullptr;
-//     }
-// }
+TravelService* TicketFactory::createService() const {
+    if (ticketType == "FlightTicketService") {
+        return new FlightTicketService();
+    } else if (ticketType == "BusTicketService") {
+        return new BusTicketService();
+    } else if (ticketType == "TrainTicketService") {
+        return new TrainTicketService();
+    } else {
+        return nullptr;
+    }
+}
+
+// Car rental factory implementation
+CarRentalFactory::CarRentalFactory(const string& vehicleType) 
+    : vehicleType(vehicleType) {}
+
+CarRentalFactory::CarRentalFactory(const CarRentalFactory& other)
+    : vehicleType(other.vehicleType) {}
+
+TravelService* CarRentalFactory::createService() const {
+    if (vehicleType == "Bike") {
+        return new BikeRental();
+    } else if (vehicleType == "Motorbike") {
+        return new MotorbikeRental();
+    } else if (vehicleType == "Car") {
+        return new CarRental();
+    } else {
+        return nullptr;
+    }
+}

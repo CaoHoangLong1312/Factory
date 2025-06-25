@@ -29,7 +29,12 @@ public:
 };
 
 class CarRentalFactory : public TravelServiceFactory {
+private:    
+    string vehicleType;
 public:
+    CarRentalFactory(const string& vehicleType);
+    virtual ~CarRentalFactory() {}
+    CarRentalFactory(const CarRentalFactory& other);
     TravelService* createService() const override;
 };
 
@@ -37,4 +42,5 @@ class HotelBookingFactory : public TravelServiceFactory {
 public:
     TravelService* createService() const override;
 };
+
 #endif /* A6C762EE_8BD5_434F_95A2_B0FA1BBEE309 */
